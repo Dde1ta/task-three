@@ -12,7 +12,7 @@ RUN cd vite-project/ && npm run build
 
 FROM nginx:alpine3.17
 
-COPY --from=builder /app/dist /usr/share/nginx/html
+COPY --from=builder /app/vite-project/dist /usr/share/nginx/html
 
 EXPOSE 80
 
