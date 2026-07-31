@@ -1,0 +1,39 @@
+import httpx
+import os
+from fastapi import FastAPI, Request, Response
+
+app = FastAPI()
+
+# The destination server where requests will be forwarded
+TARGET_URL = os.getenv("BACKEND-URL", None)
+
+
+@app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"])
+async def forward_request(path: str, request: Request):
+
+    if TARGET_URL is None:
+        return Response(content={"url not set"})
+
+    # 1. Extract request details
+    url = f"{TARGET_URL}/{path}"
+    headers = dict(request.headers)
+
+    # Remove the original host header to let the target server handle it correctly
+    headers.pop("host", None)
+
+    # 2. Forward the request asynchronously using httpx
+    async with httpx.AsyncClient() as client:
+        target_response = await client.request(
+            method=request.method,
+            url=url,
+            headers=headers,
+            params=dict(request.query_params),
+            content=await request.body()
+        )
+
+    # 3. Return the response back to the client
+    return Response(
+        content=target_response.content,
+        status_code=target_response.status_code,
+        headers=dict(target_response.headers)
+    )
