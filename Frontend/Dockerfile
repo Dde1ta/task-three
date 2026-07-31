@@ -2,7 +2,7 @@ FROM node:alpine3.11 AS builder
 
 WORKDIR /app
 
-COPY vite-project/package-lock.json .
+COPY vite-project/*package*.json .
 
 RUN npm i
 
