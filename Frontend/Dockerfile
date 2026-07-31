@@ -1,13 +1,19 @@
-FROM python:3.12-alpine
+FROM node:alpine3.11 AS builder
 
-RUN mkdir "app"
+WORKDIR /app
 
-WORKDIR "/app"
+COPY vite-project/package-lock.json .
 
-COPY requirements.txt "/app"
+RUN npm i
 
-RUN pip install -r requirements.txt
+COPY vite-project/* .
 
-COPY . "/app"
+RUN npm build
 
-ENTRYPOINT ["streamlit", "run", "main.py", "--server.address=0.0.0.0", "--server.enableCORS=false", "--server.enableXsrfProtection=false", "--server.enableWebsocketCompression=false", "--server.port=8501"]
+FROM nginx:alpine3.17
+
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
