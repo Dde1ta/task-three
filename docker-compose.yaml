@@ -1,0 +1,19 @@
+services:
+  aws-front-end:
+    image: dde1ta/aws-task:3-frontend
+    environment:
+      BACKEND-URL: aws-api
+    ports:
+      - "8001:8501"
+    networks:
+      aws-task-network:
+
+  aws-api:
+    image: dde1ta/aws-task:3-backend
+    ports:
+      - "80:8000"
+    networks:
+      aws-task-network:
+
+networks:
+  aws-task-network:
