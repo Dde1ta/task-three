@@ -8,7 +8,7 @@ RUN npm i
 
 COPY . .
 
-RUN npm run build
+RUN cd /src && npm run build
 
 FROM nginx:alpine3.17
 
