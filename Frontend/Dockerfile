@@ -4,9 +4,9 @@ RUN mkdir "app"
 
 WORKDIR "/app"
 
-COPY requirments.txt "/app"
+COPY requirements.txt "/app"
 
-RUN pip install -r requirments.txt
+RUN pip install -r requirements.txt
 
 COPY . "/app"
 
