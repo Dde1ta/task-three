@@ -8,7 +8,7 @@ RUN npm i
 
 COPY vite-project/* .
 
-RUN npm build
+RUN npm run build
 
 FROM nginx:alpine3.17
 
