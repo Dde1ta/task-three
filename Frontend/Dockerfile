@@ -6,7 +6,7 @@ COPY vite-project/*package*.json .
 
 RUN npm i
 
-COPY vite-project/* .
+COPY . .
 
 RUN npm run build
 
