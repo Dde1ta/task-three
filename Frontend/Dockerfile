@@ -8,9 +8,9 @@ RUN npm i
 
 COPY . .
 
-ARG VITE_API_URL
+ARG VITE_BACKEND_URL
 
-ENV VITE_API_URL=$VITE_API_URL
+ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 RUN cd vite-project/ && npm run build
 
