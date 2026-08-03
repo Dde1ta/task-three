@@ -1,8 +1,18 @@
 import httpx
 import os
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Allows all origins (good for local dev, change for production)
+    allow_credentials=True,
+    allow_methods=["*"], # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"], # Allows all headers
+)
+
 
 # The destination server where requests will be forwarded
 TARGET_URL = os.getenv("BACKEND-URL", None)
