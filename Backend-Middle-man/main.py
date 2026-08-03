@@ -43,8 +43,8 @@ async def forward_request(path: str, request: Request):
         )
 
     # 3. Return the response back to the client
-    return JSONResponse(
-        content=target_response.content,
+    return Response(
+        content=target_response.content, # This is raw bytes, which Response expects
         status_code=target_response.status_code,
         headers=dict(target_response.headers)
     )
