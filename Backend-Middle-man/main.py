@@ -1,6 +1,7 @@
 import httpx
 import os
 from fastapi import FastAPI, Request, Response
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -22,7 +23,7 @@ TARGET_URL = os.getenv("BACKEND-URL", None)
 async def forward_request(path: str, request: Request):
 
     if TARGET_URL is None:
-        return Response(content={"url not set"})
+        return JSONResponse(content={"error": "url not set"}, status_code=500)
 
     # 1. Extract request details
     url = f"{TARGET_URL}/{path}"
@@ -42,7 +43,7 @@ async def forward_request(path: str, request: Request):
         )
 
     # 3. Return the response back to the client
-    return Response(
+    return JSONResponse(
         content=target_response.content,
         status_code=target_response.status_code,
         headers=dict(target_response.headers)
